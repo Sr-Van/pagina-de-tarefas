@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarefas!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .tudo{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+            width: 480px;
+            background-color: rgb(17, 0, 255);
+            border-radius: 10px;
+
+            font-family: 'Poppins', sans-serif;
+
+        }
+        .title{
+            color: white;
+            letter-spacing: 10px;
+            font-size: 40px;
+            font-weight: 300;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        .inputtxt input{
+            width: 300px;
+            height: 30px;
+            margin-bottom: 30px;
+            border: none;
+            border-radius: 3px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .border{
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+            margin-top: 100px;
+            box-shadow: 0 0 0 1px rgb(184, 184, 184);
+            padding: 10px;
+            border-radius: 10px;
+            background-color: transparent;
+            -webkit-box-shadow: -3px 10px 62px -13px rgba(255,233,204,1);
+            -moz-box-shadow: -3px 10px 62px -13px rgba(255,233,204,1);
+            box-shadow: -3px 10px 62px -13px rgba(255,233,204,1);
+        }
+        .res{
+            width: 460px;
+            height: 40px;
+        }
+        .res tbody tr td{
+            background-color: rgb(167, 198, 255);
+            border-top: 1px solid white;
+            padding: 5px;
+            margin-top: 5px;
+        }
+        .botoes input{
+            width: 100px;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 1px 1px 1px rgb(0, 0, 0, 0.8);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="border">
+        <div class="tudo">
+            <div class="title">TAREFAS:</div>
+            <div class="inputtxt"><input id="enter" type="text" placeholder="Adicione uma tarefa!"></div>
+            <table class="res">
+            </table>
+            <div class="botoes" style="margin-bottom: 10px;">
+                <input type="button" value="Recuperar" onclick="recuperar()">
+                <input type="button" value="Limpar" onclick="limpar()">
+            </div>
+        </div>
+    </div>
+    
+</body>
+<script>
+    const inputEle = document.getElementById('enter');
+    var texto = inputEle.value;
+    var res = document.querySelector('table.res')
+        inputEle.addEventListener('keyup', function(e){
+            var key = e.which || e.keyCode;
+            
+                if (key == 13) { // codigo da tecla enter
+
+                    event.preventDefault(); // impede a ação padrão da tecla "Enter"
+                    var texto = inputEle.value;
+                    var novaLinha = '<tr><td>' + texto + '</td></tr>';
+                    res.innerHTML += novaLinha;
+
+                    inputEle.value = ''; // limpa o valor do input
+
+                     // armazena o texto no armazenamento local
+                    var dadosAnteriores = localStorage.getItem('dados') || '';
+                    localStorage.setItem('dados', dadosAnteriores + texto + ';')
+
+                }
+    });
+
+    function recuperar(){
+        res.innerHTML = ''
+        var dadosArmazenados = localStorage.getItem('dados');
+        if (dadosArmazenados) {
+            var dadosArray = dadosArmazenados.split(';');
+            for (var i = 0; i < dadosArray.length; i++) {
+                var texto = dadosArray[i];
+                if (texto.trim() !== '') {
+                    var novaLinha = '<tr><td>' + texto + '</td></tr>';
+                    res.innerHTML += novaLinha;
+                }
+            }
+        }
+    }
+
+    function limpar(){
+        localStorage.clear();
+    }
+
+</script>
+</html>
